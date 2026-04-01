@@ -128,5 +128,19 @@ export const shows: Show[] = [
     country: "Switzerland",
     venue: "Porteous",
     ticketLink: "https://example.com",
+  },
+  {
+    date: "2025-03-15",
+    city: "Lausanne",
+    country: "Switzerland",
+    venue: "Le Cylure",
+    ticketLink: "https://example.com",
+  },
+  {
+    date: "2025-07-24",
+    city: "Zürich",
+    country: "Switzerland",
+    venue: "Rautistrasse 3000",
+    ticketLink: "https://example.com",
   }
 ];
