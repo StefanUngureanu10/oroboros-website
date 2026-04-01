@@ -10,6 +10,7 @@ export function Navbar() {
     { id: "shows", label: "Shows" },
     { id: "merch", label: "Merch" },
     { id: "gallery", label: "Gallery" },
+    { id: "infos/downloads", label: "Infos / Downloads" },
     { id: "contact", label: "Contact" },
 ];
 

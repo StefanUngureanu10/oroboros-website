@@ -10,6 +10,7 @@ import { Gallery } from './components/Gallery';
 import { Contact } from './components/ContactUs';
 import { Footer } from './components/Footer';
 import { ScrollToTop } from './components/Arrow';
+import { PressKit } from './components/Presskit';
 
 import bandPhoto from './assets/oroboros_bandpic.png';
 
@@ -48,9 +49,17 @@ function App() {
         </FadeInOnScroll>
       </section>
 
+      {/* Merch */}
+
       <section id="gallery">
         <FadeInOnScroll>
           <Gallery />
+        </FadeInOnScroll>
+      </section>
+
+      <section id="infos/downloads">
+        <FadeInOnScroll>
+          <PressKit />
         </FadeInOnScroll>
       </section>
       
