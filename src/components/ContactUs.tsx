@@ -1,7 +1,12 @@
 import { useState } from "react";
 import emailjs from "emailjs-com";
 
-export function Contact() {
+// Ensure you have these in your .env file (at project root)
+// REACT_APP_EMAILJS_SERVICE_ID=your_service_id
+// REACT_APP_EMAILJS_TEMPLATE_ID=your_template_id
+// REACT_APP_EMAILJS_PUBLIC_KEY=your_public_key
+
+export function ContactUs() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -9,40 +14,75 @@ export function Contact() {
     message: "",
   });
 
-  const [statusMessage, setStatusMessage] = useState("");
+  const [errors, setErrors] = useState({
+    name: false,
+    email: false,
+    topic: false,
+    message: false,
+  });
 
-  // Handle input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const [statusMessage, setStatusMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Email validation regex
+  const isValidEmail = (email: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  // Handle input changes + live validation
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData({ ...formData, [name]: value });
+
+    setErrors({
+      ...errors,
+      [name]:
+        name === "email" ? !isValidEmail(value) : value.trim() === "",
+    });
   };
 
-  // Handle form submission
+  // Form submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const serviceID = "your_service_id";   // Replace with your EmailJS service ID
-    const templateID = "your_template_id"; // Replace with your EmailJS template ID
-    const userID = "your_public_key";      // Replace with your EmailJS public key
+    const newErrors = {
+      name: formData.name.trim() === "",
+      email: !isValidEmail(formData.email),
+      topic: formData.topic.trim() === "",
+      message: formData.message.trim() === "",
+    };
 
-    emailjs.send(serviceID, templateID, formData, userID)
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some(Boolean)) {
+      setStatusMessage("Please fix the highlighted fields.");
+      return;
+    }
+
+    setLoading(true);
+    setStatusMessage("");
+
+    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const userID = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    emailjs
+      .send(serviceID, templateID, formData, userID)
       .then(() => {
         setStatusMessage("Message sent successfully!");
         setFormData({ name: "", email: "", topic: "", message: "" });
+        setErrors({ name: false, email: false, topic: false, message: false });
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
         setStatusMessage("Failed to send message. Try again later.");
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
-  // Helper function to generate styled links with hover
-  const StyledLink = ({
-    href,
-    label,
-  }: {
-    href: string;
-    label: string;
-  }) => (
+  // Styled link for email
+  const StyledLink = ({ href, label }: { href: string; label: string }) => (
     <a
       href={href}
       target="_blank"
@@ -50,19 +90,16 @@ export function Contact() {
       style={{
         color: "#a108a1ff",
         textDecoration: "none",
-        /*padding: "2px 2px",*/
         transition: "all 0.3s",
         marginLeft: "10px",
       }}
       onMouseEnter={(e) => {
-        const link = e.currentTarget;
-        link.style.color = "#000";
-        link.style.backgroundColor = "#fff";
+        e.currentTarget.style.color = "#000";
+        e.currentTarget.style.backgroundColor = "#fff";
       }}
       onMouseLeave={(e) => {
-        const link = e.currentTarget;
-        link.style.color = "#a108a1ff";
-        link.style.backgroundColor = "transparent";
+        e.currentTarget.style.color = "#a108a1ff";
+        e.currentTarget.style.backgroundColor = "transparent";
       }}
     >
       {label}
@@ -72,36 +109,21 @@ export function Contact() {
   return (
     <section
       id="contact"
-      style={{
-        padding: "60px 40px",
-        backgroundColor: "#111",
-        color: "white",
-        minHeight: "60vh",
-      }}
+      style={{ padding: "60px 40px", backgroundColor: "#111", color: "#fff", minHeight: "60vh" }}
     >
       <h2 style={{ textAlign: "center", marginBottom: "40px" }}>Contact Us</h2>
 
-      {/* Contact Info */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
         <p>
-          For booking and other inquiries, please email us at:{" "}
+          For booking and other inquiries, email us at:
           <StyledLink href="mailto:oroboros.crew@gmail.com" label="oroboros.crew@gmail.com" />
         </p>
-        <p>
-            Or use the contact form below:
-        </p>
+        <p>Or use the contact form below:</p>
       </div>
 
-      {/* Contact Form */}
       <form
         onSubmit={handleSubmit}
-        style={{
-          maxWidth: "500px",
-          margin: "0 auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: "15px",
-        }}
+        style={{ maxWidth: "500px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "15px" }}
       >
         <input
           type="text"
@@ -109,11 +131,10 @@ export function Contact() {
           placeholder="Your Name"
           value={formData.name}
           onChange={handleChange}
-          required
           style={{
             padding: "10px",
             borderRadius: "4px",
-            border: "1px solid #fff",
+            border: errors.name ? "1px solid red" : "1px solid #fff",
             backgroundColor: "#222",
             color: "white",
           }}
@@ -124,26 +145,24 @@ export function Contact() {
           placeholder="Your Email"
           value={formData.email}
           onChange={handleChange}
-          required
           style={{
             padding: "10px",
             borderRadius: "4px",
-            border: "1px solid #fff",
+            border: errors.email ? "1px solid red" : "1px solid #fff",
             backgroundColor: "#222",
             color: "white",
           }}
         />
         <input
-          type="topic"
+          type="text"
           name="topic"
           placeholder="Topic"
           value={formData.topic}
           onChange={handleChange}
-          required
           style={{
             padding: "10px",
             borderRadius: "4px",
-            border: "1px solid #fff",
+            border: errors.topic ? "1px solid red" : "1px solid #fff",
             backgroundColor: "#222",
             color: "white",
           }}
@@ -153,18 +172,19 @@ export function Contact() {
           placeholder="Your Message"
           value={formData.message}
           onChange={handleChange}
-          required
           rows={5}
           style={{
             padding: "10px",
             borderRadius: "4px",
-            border: "1px solid #fff",
+            border: errors.message ? "1px solid red" : "1px solid #fff",
             backgroundColor: "#222",
             color: "white",
           }}
         />
+
         <button
           type="submit"
+          disabled={loading}
           style={{
             padding: "12px",
             borderRadius: "4px",
@@ -174,25 +194,26 @@ export function Contact() {
             fontWeight: "bold",
             cursor: "pointer",
             transition: "all 0.3s",
+            opacity: loading ? 0.6 : 1,
           }}
           onMouseEnter={(e) => {
-            const btn = e.currentTarget;
-            btn.style.backgroundColor = "#fff";
-            btn.style.color = "#000";
+            if (!loading) {
+              e.currentTarget.style.backgroundColor = "#fff";
+              e.currentTarget.style.color = "#000";
+            }
           }}
           onMouseLeave={(e) => {
-            const btn = e.currentTarget;
-            btn.style.backgroundColor = "#a108a1ff";
-            btn.style.color = "#000";
+            if (!loading) {
+              e.currentTarget.style.backgroundColor = "#a108a1ff";
+              e.currentTarget.style.color = "#000";
+            }
           }}
         >
-          Send Message
+          {loading ? "Sending..." : "Send Message"}
         </button>
       </form>
 
-      {statusMessage && (
-        <p style={{ textAlign: "center", marginTop: "20px" }}>{statusMessage}</p>
-      )}
+      {statusMessage && <p style={{ textAlign: "center", marginTop: "20px" }}>{statusMessage}</p>}
     </section>
   );
 }

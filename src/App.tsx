@@ -7,7 +7,7 @@ import { Music } from './components/Music';
 import { Desc } from './components/Desc';
 import { BandPhoto } from './components/BandPic';
 import { Gallery } from './components/Gallery';
-import { Contact } from './components/ContactUs';
+import { ContactUs } from './components/ContactUs';
 import { Footer } from './components/Footer';
 import { ScrollToTop } from './components/Arrow';
 import { PressKit } from './components/Presskit';
@@ -70,7 +70,7 @@ function App() {
       
       <section id="contact">
         <FadeInOnScroll>
-          <Contact />
+          <ContactUs />
         </FadeInOnScroll>
       </section>
 
