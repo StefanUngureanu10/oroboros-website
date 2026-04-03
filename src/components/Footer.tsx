@@ -1,4 +1,3 @@
-import React from "react";
 import { FaInstagram, FaFacebookF, FaYoutube, FaSpotify, FaBandcamp, FaTiktok } from "react-icons/fa";
 
 export function Footer() {
@@ -10,8 +9,6 @@ export function Footer() {
     { icon: <FaBandcamp />, url: "https://facebook.com/yourprofile", color: "#0a52b1" },
     { icon: <FaTiktok />, url: "https://facebook.com/yourprofile", color: "#707174" },
   ];
-
-  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
     <footer
