@@ -79,26 +79,34 @@ function PaginatedList({
 
       {/* Pagination buttons */}
       {totalPages > 1 && (
-        <div style={{ marginTop: "10px" }}>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i}
-              onClick={() => goToPage(i + 1)}
-              style={{
-                margin: "0 5px",
-                padding: "5px 10px",
-                backgroundColor: currentPage === i + 1 ? "#fff" : "#222",
-                color: currentPage === i + 1 ? "#000" : "#fff",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-            >
-              {i + 1}
-            </button>
-          ))}
-        </div>
-      )}
+      <div
+        style={{
+          marginTop: "15px",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(40px, 1fr))",
+          gap: "10px",
+          maxWidth: "300px", // 👈 keeps it compact and centered
+        }}
+  >
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => goToPage(i + 1)}
+            style={{
+              padding: "6px 0",
+              backgroundColor: currentPage === i + 1 ? "#fff" : "#222",
+              color: currentPage === i + 1 ? "#000" : "#fff",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              width: "100%", // 👈 fills grid cell
+          }}
+        >
+        {i + 1}
+      </button>
+    ))}
+  </div>
+)}
     </div>
   );
 }
