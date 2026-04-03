@@ -1,10 +1,7 @@
 import { useState } from "react";
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser";
 
-// Ensure you have these in your .env file (at project root)
-// REACT_APP_EMAILJS_SERVICE_ID=your_service_id
-// REACT_APP_EMAILJS_TEMPLATE_ID=your_template_id
-// REACT_APP_EMAILJS_PUBLIC_KEY=your_public_key
+emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
 
 export function ContactUs() {
   const [formData, setFormData] = useState({
@@ -24,11 +21,9 @@ export function ContactUs() {
   const [statusMessage, setStatusMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Email validation regex
   const isValidEmail = (email: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  // Handle input changes + live validation
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -43,7 +38,6 @@ export function ContactUs() {
     });
   };
 
-  // Form submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -66,22 +60,26 @@ export function ContactUs() {
 
     const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const userID = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
     emailjs
-      .send(serviceID, templateID, formData, userID)
+      .send(serviceID, templateID, {
+        name: formData.name,
+        email: formData.email,
+        topic: formData.topic,
+        message: formData.message,
+      })
       .then(() => {
         setStatusMessage("Message sent successfully!");
         setFormData({ name: "", email: "", topic: "", message: "" });
         setErrors({ name: false, email: false, topic: false, message: false });
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error(error); // 🔥 keep this for debugging
         setStatusMessage("Failed to send message. Try again later.");
       })
       .finally(() => setLoading(false));
   };
 
-  // Styled link for email
   const StyledLink = ({ href, label }: { href: string; label: string }) => (
     <a
       href={href}
@@ -109,21 +107,37 @@ export function ContactUs() {
   return (
     <section
       id="contact"
-      style={{ padding: "60px 40px", backgroundColor: "#111", color: "#fff", minHeight: "60vh" }}
+      style={{
+        padding: "60px 40px",
+        backgroundColor: "#111",
+        color: "#fff",
+        minHeight: "60vh",
+      }}
     >
-      <h2 style={{ textAlign: "center", marginBottom: "40px" }}>Contact Us</h2>
+      <h2 style={{ textAlign: "center", marginBottom: "40px" }}>
+        Contact Us
+      </h2>
 
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
         <p>
           For booking and other inquiries, email us at:
-          <StyledLink href="mailto:oroboros.crew@gmail.com" label="oroboros.crew@gmail.com" />
+          <StyledLink
+            href="mailto:oroboros.crew@gmail.com"
+            label="oroboros.crew@gmail.com"
+          />
         </p>
         <p>Or use the contact form below:</p>
       </div>
 
       <form
         onSubmit={handleSubmit}
-        style={{ maxWidth: "500px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "15px" }}
+        style={{
+          maxWidth: "500px",
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
+          gap: "15px",
+        }}
       >
         <input
           type="text"
@@ -139,6 +153,7 @@ export function ContactUs() {
             color: "white",
           }}
         />
+
         <input
           type="email"
           name="email"
@@ -153,6 +168,7 @@ export function ContactUs() {
             color: "white",
           }}
         />
+
         <input
           type="text"
           name="topic"
@@ -167,6 +183,7 @@ export function ContactUs() {
             color: "white",
           }}
         />
+
         <textarea
           name="message"
           placeholder="Your Message"
@@ -193,27 +210,18 @@ export function ContactUs() {
             color: "#000",
             fontWeight: "bold",
             cursor: "pointer",
-            transition: "all 0.3s",
             opacity: loading ? 0.6 : 1,
-          }}
-          onMouseEnter={(e) => {
-            if (!loading) {
-              e.currentTarget.style.backgroundColor = "#fff";
-              e.currentTarget.style.color = "#000";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!loading) {
-              e.currentTarget.style.backgroundColor = "#a108a1ff";
-              e.currentTarget.style.color = "#000";
-            }
           }}
         >
           {loading ? "Sending..." : "Send Message"}
         </button>
       </form>
 
-      {statusMessage && <p style={{ textAlign: "center", marginTop: "20px" }}>{statusMessage}</p>}
+      {statusMessage && (
+        <p style={{ textAlign: "center", marginTop: "20px" }}>
+          {statusMessage}
+        </p>
+      )}
     </section>
   );
 }
