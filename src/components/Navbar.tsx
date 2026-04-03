@@ -1,6 +1,6 @@
 import { FadeInOnScroll } from "./FadeInOnScroll";
 import { useEffect, useState } from "react";
-import logo from "../assets/oroboros_logo.png"
+import logo from "../assets/oroboros_logo.png";
 
 export function Navbar() {
   const sections = [
@@ -10,13 +10,24 @@ export function Navbar() {
     { id: "shows", label: "Shows" },
     { id: "merch", label: "Merch" },
     { id: "gallery", label: "Gallery" },
-    { id: "infos/downloads", label: "Infos / Downloads" },
+    { id: "infos-downloads", label: "Infos / Downloads" }, 
     { id: "contact", label: "Contact" },
-];
+  ];
 
-  const [activeSection, setActiveSection] = useState<string>(""); // <- start with nothing highlighted
+  const [activeSection, setActiveSection] = useState<string>("");
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Track which section is in view
+  // Detect screen size
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
+  // Track scroll position
   useEffect(() => {
     const handleScroll = () => {
       let current = "";
@@ -24,13 +35,14 @@ export function Navbar() {
         const element = document.getElementById(section.id);
         if (element) {
           const rect = element.getBoundingClientRect();
-          if (rect.top <= 100) {
+          if (rect.top <= 120) {
             current = section.id;
           }
         }
       }
       setActiveSection(current);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [sections]);
@@ -48,62 +60,80 @@ export function Navbar() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "20px",
+        padding: isMobile ? "12px" : "20px",
         backgroundColor: "#111",
       }}
     >
+      {/* Logo */}
       <FadeInOnScroll>
         <img
           src={logo}
           alt="Oroboros Logo"
           style={{
-            height: "250px",
+            height: isMobile ? "100px" : "220px",
             objectFit: "contain",
             marginBottom: "10px",
           }}
         />
       </FadeInOnScroll>
 
+      {/* Divider */}
       <div
         style={{
           width: "100%",
           height: "1px",
           backgroundColor: "#fff",
-          marginBottom: "20px",
+          marginBottom: isMobile ? "12px" : "20px",
         }}
       />
 
-      <div style={{ display: "flex", gap: "20px" }}>
-        {sections.map((section) => (
-          <button
-            key={section.id}
-            onClick={() => scrollToSection(section.id)}
-            style={{
-              background: "none",
-              border: "2px solid #fff",
-              color: "#fff",
-              fontWeight: activeSection === section.id ? "bold" : "normal",
-              cursor: "pointer",
-              transition: "all 0.5s",
-              fontSize: "16px",
-              padding: "6px 12px",
-              borderRadius: "4px",
-            }}
-            onMouseEnter={(e) => {
-              const btn = e.currentTarget;
-              btn.style.backgroundColor = "#fff";
-              btn.style.color = "#000";
-            }}
-            onMouseLeave={(e) => {
-              const btn = e.currentTarget;
-              btn.style.backgroundColor = "transparent";
-              btn.style.color =
-                activeSection === section.id ? "#fff" : "#fff";
-            }}
-          >
-            {section.label}
-          </button>
-        ))}
+      {/* Navigation */}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: isMobile ? "10px" : "18px",
+          maxWidth: "900px",
+        }}
+      >
+        {sections.map((section) => {
+          const isActive = activeSection === section.id;
+
+          return (
+            <button
+              key={section.id}
+              onClick={() => scrollToSection(section.id)}
+              style={{
+                background: isActive ? "#fff" : "transparent",
+                border: "1px solid #fff",
+                color: isActive ? "#000" : "#fff",
+                fontWeight: isActive ? "bold" : "normal",
+                cursor: "pointer",
+                transition: "all 0.25s ease",
+                fontSize: isMobile ? "14px" : "16px",
+                padding: isMobile ? "5px 10px" : "6px 14px",
+                borderRadius: "4px",
+              }}
+              onMouseEnter={(e) => {
+                if (!isMobile) {
+                  e.currentTarget.style.backgroundColor = "#fff";
+                  e.currentTarget.style.color = "#000";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isMobile) {
+                  e.currentTarget.style.backgroundColor = isActive
+                    ? "#fff"
+                    : "transparent";
+                  e.currentTarget.style.color = isActive ? "#000" : "#fff";
+                }
+              }}
+            >
+              {section.label}
+            </button>
+          );
+        })}
       </div>
     </nav>
   );

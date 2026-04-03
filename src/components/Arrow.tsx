@@ -3,15 +3,29 @@ import { useEffect, useState } from "react";
 export function ScrollToTop() {
   const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
+  // Detect screen size
   useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+    };
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
+  // Scroll visibility (only matters on desktop)
+  useEffect(() => {
+    if (isMobile) return;
+
     const handleScroll = () => {
       setVisible(window.scrollY > 300);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isMobile]);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -19,6 +33,9 @@ export function ScrollToTop() {
       behavior: "smooth",
     });
   };
+
+  // 🚫 Completely disable on mobile
+  if (isMobile) return null;
 
   return (
     <button
@@ -44,7 +61,7 @@ export function ScrollToTop() {
         color: hovered ? "#000" : "#fff",
 
         border: "1px solid #fff",
-        borderRadius: "6px", // 👈 slight rounding (can be 0 if you want sharp)
+        borderRadius: "6px",
 
         cursor: "pointer",
 
@@ -65,7 +82,7 @@ export function ScrollToTop() {
       <span
         style={{
           display: "block",
-          transform: "translateY(-1px)", // 👈 tiny optical correction
+          transform: "translateY(-1px)",
         }}
       >
         ▲
