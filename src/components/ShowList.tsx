@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { shows } from "../data/shows";
 import type { Show } from "../data/shows";
 
@@ -12,7 +12,7 @@ function formatDate(dateString: string) {
   });
 }
 
-// Reusable PaginatedList with fade transition
+// Reusable PaginatedList with fade transition + responsive pagination
 function PaginatedList({
   shows,
   pageSize = 5,
@@ -23,7 +23,8 @@ function PaginatedList({
   showTickets?: boolean;
 }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [fade, setFade] = useState(false); // fade state
+  const [fade, setFade] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const totalPages = Math.ceil(shows.length / pageSize);
 
   const currentShows = shows.slice(
@@ -31,12 +32,20 @@ function PaginatedList({
     currentPage * pageSize
   );
 
+  // Detect mobile screen
+  useEffect(() => {
+    const checkScreen = () => setIsMobile(window.innerWidth <= 768);
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
   const goToPage = (page: number) => {
-    setFade(true);               // start fade-out
+    setFade(true);
     setTimeout(() => {
-      setCurrentPage(page);       // change page
-      setFade(false);             // fade-in
-    }, 150);                      // duration matches transition
+      setCurrentPage(page);
+      setFade(false);
+    }, 150);
   };
 
   return (
@@ -55,9 +64,9 @@ function PaginatedList({
               borderBottom: "1px solid #333",
               paddingBottom: "10px",
               display: "flex",
-              flexDirection: "column", // stack all elements vertically
-              gap: "4px",              // small spacing between elements
-              opacity: showTickets ? 1 : 0.6, // faded for past shows
+              flexDirection: "column",
+              gap: "4px",
+              opacity: showTickets ? 1 : 0.6,
             }}
           >
             <strong>{formatDate(show.date)}</strong>
@@ -77,36 +86,48 @@ function PaginatedList({
         ))}
       </div>
 
-      {/* Pagination buttons */}
+      {/* Responsive Pagination */}
       {totalPages > 1 && (
-      <div
-        style={{
-          marginTop: "15px",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(40px, 1fr))",
-          gap: "10px",
-          maxWidth: "300px", // 👈 keeps it compact and centered
-        }}
-  >
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            onClick={() => goToPage(i + 1)}
-            style={{
-              padding: "6px 0",
-              backgroundColor: currentPage === i + 1 ? "#fff" : "#222",
-              color: currentPage === i + 1 ? "#000" : "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              width: "100%", // 👈 fills grid cell
-          }}
+        <div
+          style={
+            isMobile
+              ? {
+                  marginTop: "15px",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(40px, 1fr))",
+                  gap: "10px",
+                  maxWidth: "280px",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }
+              : {
+                  marginTop: "10px",
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "8px",
+                  flexWrap: "wrap",
+                }
+          }
         >
-        {i + 1}
-      </button>
-    ))}
-  </div>
-)}
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => goToPage(i + 1)}
+              style={{
+                padding: isMobile ? "6px 0" : "5px 10px",
+                backgroundColor: currentPage === i + 1 ? "#fff" : "#222",
+                color: currentPage === i + 1 ? "#000" : "#fff",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                width: isMobile ? "100%" : "auto",
+              }}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
