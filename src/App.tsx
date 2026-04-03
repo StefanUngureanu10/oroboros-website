@@ -62,7 +62,7 @@ function App() {
         </FadeInOnScroll>
       </section>
 
-      <section id="infos/downloads">
+      <section id="infos-downloads">
         <FadeInOnScroll>
           <PressKit />
         </FadeInOnScroll>
