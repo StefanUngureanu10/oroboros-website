@@ -2,12 +2,12 @@ import { FaInstagram, FaFacebookF, FaYoutube, FaSpotify, FaBandcamp, FaTiktok } 
 
 export function Footer() {
   const socialLinks = [
-    { icon: <FaInstagram />, url: "https://instagram.com/yourprofile", color: "#E1306C" },
-    { icon: <FaYoutube />, url: "https://youtube.com/yourprofile", color: "#FF0000" },
-    { icon: <FaFacebookF />, url: "https://facebook.com/yourprofile", color: "#1877F2" },
-    { icon: <FaSpotify />, url: "https://facebook.com/yourprofile", color: "#56f218" },
-    { icon: <FaBandcamp />, url: "https://facebook.com/yourprofile", color: "#0a52b1" },
-    { icon: <FaTiktok />, url: "https://facebook.com/yourprofile", color: "#707174" },
+    { icon: <FaInstagram />, url: "https://www.instagram.com/oroboros.crew/", color: "#E1306C" },
+    { icon: <FaYoutube />, url: "https://www.youtube.com/channel/UCgaqHRmlut16IW-h9OZrM3g", color: "#FF0000" },
+    { icon: <FaFacebookF />, url: "https://www.facebook.com/people/OROBOROS/100063581351214/?mibextid=LQQJ4d&rdid=tVOAHj0pKxNOgkS7&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2FjQpJL8EqE5sg2SKu%2F%3Fmibextid%3DLQQJ4d", color: "#1877F2" },
+    { icon: <FaSpotify />, url: "https://open.spotify.com/intl-de/artist/6xhSHxNQrZjyRjYDS81Gz8?si=EqROejXgRcOFjCUY-i3rZg&app_destination=copy-link&nd=1&dlsi=f65bfd0926b3428a", color: "#56f218" },
+    { icon: <FaBandcamp />, url: "https://oroboros-crew.bandcamp.com/community", color: "#0a52b1" },
+    { icon: <FaTiktok />, url: "https://www.tiktok.com/@oroboros.crew?_t=zn-90nkv0tblum&_r=1", color: "#707174" },
   ];
 
   return (
