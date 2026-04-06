@@ -26,11 +26,9 @@ function App() {
 
       <FadeInOnScroll>
         <section id="home">
-          <FadeInOnScroll>
           <BandPhoto 
            image={bandPhoto} 
           />
-          </FadeInOnScroll>
         </section>
       </FadeInOnScroll>
       
