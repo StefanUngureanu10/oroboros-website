@@ -13,7 +13,7 @@ import { ScrollToTop } from './components/Arrow';
 import { PressKit } from './components/Presskit';
 import { Merch } from './components/Merch';
 
-import bandPhoto from './assets/oroboros_bandpic.png';
+import bandPhoto from './assets/Plakat_SoMe_Story.jpg';
 
 function App() {
   return (
