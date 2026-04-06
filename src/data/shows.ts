@@ -36,14 +36,14 @@ export const shows: Show[] = [
     city: "Saint-Maurice",
     country: "Switzerland",
     venue: "Manoir Pub",
-    ticketLink: "https://example.com",
+    ticketLink: "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://infomaniak.events/de-ch/konzerte/ashed-winter-oroboros-at-manoirpub/152a71b5-41c3-4340-b0bd-8777cb0b31e5/events/389571&ved=2ahUKEwiwqqWwgdmTAxWLgP0HHWxPAuEQFnoECE4QAQ&usg=AOvVaw1jcyCs1pzwRhuEbWYRHYOW",
   },
   {
     date: "2026-05-23",
     city: "Aarau",
     country: "Switzerland",
     venue: "Flösserplatz",
-    ticketLink: "https://example.com",
+    ticketLink: "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://eventfrog.ch/de/p/konzerte/hard-rock-heavy-metal/raw-reflections-ag-oroboros-vd-akudama-bs-7445413998768447479.html&ved=2ahUKEwjVwt7GgdmTAxV1nf0HHVDzB-QQFnoECB4QAQ&usg=AOvVaw0KWDJQzixLCDMF5nsB0LXd",
   },
   {
     date: "2025-11-15",
