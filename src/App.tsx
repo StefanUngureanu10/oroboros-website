@@ -19,10 +19,8 @@ function App() {
   return (
     <div>
       <ScrollToTop />
-      
-      <FadeInOnScroll>
-        <Navbar />
-      </FadeInOnScroll>
+
+      <Navbar />
 
       <FadeInOnScroll>
         <section id="home">

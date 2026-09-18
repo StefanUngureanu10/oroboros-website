@@ -16,6 +16,7 @@ export function Navbar() {
 
   const [activeSection, setActiveSection] = useState<string>("");
   const [isMobile, setIsMobile] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // Detect screen size
   useEffect(() => {
@@ -30,6 +31,8 @@ export function Navbar() {
   // Track scroll position
   useEffect(() => {
     const handleScroll = () => {
+      setIsScrolled(window.scrollY > 60);
+
       let current = "";
       for (const section of sections) {
         const element = document.getElementById(section.id);
@@ -57,11 +60,16 @@ export function Navbar() {
   return (
     <nav
       style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: isMobile ? "12px" : "20px",
+        padding: isScrolled ? "8px 12px" : isMobile ? "12px" : "20px",
         backgroundColor: "#111",
+        boxShadow: isScrolled ? "0 4px 12px rgba(0, 0, 0, 0.5)" : "none",
+        transition: "padding 0.3s ease, box-shadow 0.3s ease",
       }}
     >
       {/* Logo */}
@@ -70,9 +78,10 @@ export function Navbar() {
           src={logo}
           alt="Oroboros Logo"
           style={{
-            height: isMobile ? "100px" : "220px",
+            height: isScrolled ? "50px" : isMobile ? "100px" : "220px",
             objectFit: "contain",
-            marginBottom: "10px",
+            marginBottom: isScrolled ? "6px" : "10px",
+            transition: "height 0.3s ease, margin-bottom 0.3s ease",
           }}
         />
       </FadeInOnScroll>
@@ -83,7 +92,8 @@ export function Navbar() {
           width: "100%",
           height: "1px",
           backgroundColor: "#fff",
-          marginBottom: isMobile ? "12px" : "20px",
+          marginBottom: isScrolled ? "8px" : isMobile ? "12px" : "20px",
+          transition: "margin-bottom 0.3s ease",
         }}
       />
 
