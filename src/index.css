@@ -65,6 +65,21 @@
 body {
   margin: 0;
   font-family: 'Roboto Slab', serif;
+  background-color: #111;
+  /* Replace with your image path. Every section already has an opaque
+     #111 background, so this is only visible in the gutters on either
+     side of the centered #root column, not behind the content itself. */
+  background-image: url("/your-background-image.jpg");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  background-attachment: fixed;
+
+  @media (max-width: 1024px) {
+    /* `fixed` is jank-prone on mobile browsers and the gutters are gone
+       below #root's max-width anyway, so scroll normally there. */
+    background-attachment: scroll;
+  }
 }
 
 h1,
