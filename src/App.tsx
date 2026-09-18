@@ -13,7 +13,7 @@ import { ScrollToTop } from './components/Arrow';
 import { PressKit } from './components/Presskit';
 import { Merch } from './components/Merch';
 
-import bandPhoto from './assets/Plakat_SoMe_Story.jpg';
+//import bandPhoto from './assets/Plakat_SoMe_Story.jpg';
 
 function App() {
   return (
@@ -24,9 +24,10 @@ function App() {
 
       <FadeInOnScroll>
         <section id="home">
+          {/*
           <BandPhoto 
            image={bandPhoto} 
-          />
+          />*/} 
         </section>
       </FadeInOnScroll>
       
