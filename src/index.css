@@ -69,7 +69,7 @@ body {
   /* Replace with your image path. Every section already has an opaque
      #111 background, so this is only visible in the gutters on either
      side of the centered #root column, not behind the content itself. */
-  background-image: url("/your-background-image.jpg");
+  background-image: url("./assets/Snake_Pit.jpeg");
   background-repeat: no-repeat;
   background-position: top center;
   background-size: cover;
