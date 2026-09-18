@@ -11,13 +11,33 @@ export type Show = {
 export const shows: Show[] = [
   
   {
+    date: "2026-10-31",
+    city: "Lausanne",
+    country: "Switzerland",
+    venue: "Maison de Quartier Sous-Gare",
+  },
+  {
+    date: "2026-10-16",
+    city: "Biel/Bienne",
+    country: "Switzerland",
+    venue: "Eldorado Bar",
+    ticketLink: "https://eldoradobielbienne.ch/event/oroboros-raw-reflections-16-10-2026/"
+  },
+  {
+    date: "2026-10-03",
+    city: "Olten",
+    country: "Switzerland",
+    venue: "Garage 8",
+    ticketLink: "https://eventfrog.ch/de/p/konzerte/hard-rock-heavy-metal/save-your-last-breath-ghostlights-oroboros-c-o-l-7490792487130244548.html",
+  },
+  {
     date: "2026-03-06",
     city: "Zürich",
     country: "Switzerland",
     venue: "Ebrietas",
     ticketLink: "https://example.com",
   },
-    {
+  {
     date: "2026-03-07",
     city: "Biel/Bienne",
     country: "Switzerland",
