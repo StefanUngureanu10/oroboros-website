@@ -11,12 +11,6 @@ export type Show = {
 export const shows: Show[] = [
   
   {
-    date: "2026-10-31",
-    city: "Lausanne",
-    country: "Switzerland",
-    venue: "Maison de Quartier Sous-Gare",
-  },
-  {
     date: "2026-10-16",
     city: "Biel/Bienne",
     country: "Switzerland",
